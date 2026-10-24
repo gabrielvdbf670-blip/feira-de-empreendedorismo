@@ -1,0 +1,988 @@
+<!DOCTYPE html> <html lang="pt-BR">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Feira Escolar | Evolução Unidade de Ensino</title> <style>  
+    :root {  
+      --bordo: #650817;  
+      --vermelho: #A8171B;  
+      --dourado: #F9B900;  
+      --branco: #FFFFFF;  
+      --preto: #21070B;  
+      --cinza: #71666A;  
+      --fundo: #FFFDFD;  
+      --rosa-claro: #F8EEEE;  
+    }  
+  
+    * {  
+      margin: 0;  
+      padding: 0;  
+      box-sizing: border-box;  
+    }  
+  
+    html {  
+      scroll-behavior: smooth;  
+      scroll-padding-top: 90px;  
+    }  
+  
+    body {  
+      font-family: Arial, Helvetica, sans-serif;  
+      background: var(--fundo);  
+      color: var(--preto);  
+      overflow-x: hidden;  
+    }  
+  
+    a {  
+      color: inherit;  
+      text-decoration: none;  
+    }  
+  
+    /* ANIMAÇÕES */  
+  
+    @keyframes aparecer {  
+      0% {  
+        opacity: 0;  
+        transform: translateY(36px) scale(0.98);  
+      }  
+      60% {  
+        opacity: 1;  
+        transform: translateY(-6px) scale(1.01);  
+      }  
+      100% {  
+        opacity: 1;  
+        transform: translateY(0) scale(1);  
+      }  
+    }  
+  
+    @keyframes surgir {  
+      0% {  
+        opacity: 0;  
+        transform: scale(0.82) rotateX(18deg) translateY(18px);  
+      }  
+      60% {  
+        opacity: 1;  
+        transform: scale(1.03) rotateX(0) translateY(-2px);  
+      }  
+      100% {  
+        opacity: 1;  
+        transform: scale(1) rotateX(0) translateY(0);  
+      }  
+    }  
+  
+    @keyframes flutuar {  
+      0%, 100% {  
+        transform: translateY(0) rotate(0deg);  
+      }  
+      50% {  
+        transform: translateY(-14px) rotate(5deg);  
+      }  
+    }  
+  
+    @keyframes brilho {  
+      0%, 100% {  
+        box-shadow: 0 0 0 rgba(249, 185, 0, 0);  
+      }  
+      40% {  
+        box-shadow: 0 0 26px rgba(249, 185, 0, 0.32);  
+      }  
+      80% {  
+        box-shadow: 0 0 16px rgba(249, 185, 0, 0.18);  
+      }  
+    }  
+
+    @keyframes pulseGlow {  
+      0%, 100% {  
+        transform: scale(1);  
+        box-shadow: 0 0 0 rgba(166, 23, 27, 0);  
+      }  
+      50% {  
+        transform: scale(1.02);  
+        box-shadow: 0 0 28px rgba(166, 23, 27, 0.22);  
+      }  
+    }  
+
+    @keyframes deslizar {  
+      0% {  
+        opacity: 0;  
+        transform: translateX(-25px);  
+      }  
+      100% {  
+        opacity: 1;  
+        transform: translateX(0);  
+      }  
+    }  
+
+    @keyframes subirCard {  
+      0%, 100% {  
+        transform: translateY(0) rotate(0deg);  
+      }  
+      50% {  
+        transform: translateY(-6px) rotate(0.7deg);  
+      }  
+    }  
+
+    @keyframes linhaDourada {  
+      0%, 100% {  
+        transform: scaleX(1);  
+        opacity: 0.7;  
+      }  
+      50% {  
+        transform: scaleX(1.15);  
+        opacity: 1;  
+      }  
+    }  
+
+    @keyframes brilhoPremium {  
+      0%, 100% {  
+        filter: brightness(1) saturate(1);  
+        transform: scale(1);  
+      }  
+      50% {  
+        filter: brightness(1.12) saturate(1.15);  
+        transform: scale(1.03);  
+      }  
+    }  
+
+    @keyframes bordaGlow {  
+      0%, 100% {  
+        box-shadow: 0 0 0 rgba(249, 185, 0, 0), 0 0 0 rgba(166, 23, 27, 0);  
+      }  
+      50% {  
+        box-shadow: 0 0 20px rgba(249, 185, 0, 0.22), 0 0 30px rgba(166, 23, 27, 0.12);  
+      }  
+    }  
+
+    @keyframes hoverTilt {  
+      0% {  
+        transform: perspective(1000px) rotateX(0deg) rotateY(0deg);  
+      }  
+      50% {  
+        transform: perspective(1000px) rotateX(2deg) rotateY(-3deg);  
+      }  
+      100% {  
+        transform: perspective(1000px) rotateX(0deg) rotateY(0deg);  
+      }  
+    }  
+  
+    /* CABEÇALHO */  
+  
+    header {  
+      position: sticky;  
+      top: 0;  
+      z-index: 100;  
+      background: rgba(255, 255, 255, 0.96);  
+      backdrop-filter: blur(12px);  
+      border-bottom: 3px solid var(--bordo);  
+      padding: 16px 7%;  
+      display: flex;  
+      align-items: center;  
+      justify-content: space-between;  
+      gap: 20px;  
+      animation: aparecer 0.7s ease both;  
+    }  
+  
+    .logo {  
+      display: flex;  
+      align-items: center;  
+      gap: 12px;  
+      color: var(--bordo);  
+      font-size: 23px;  
+      font-weight: 900;  
+      letter-spacing: -1px;  
+    }  
+
+    .logo-imagem {  
+      width: 78px;  
+      height: 78px;  
+      object-fit: contain;  
+      border-radius: 10px;  
+      background: white;  
+      padding: 4px;  
+      box-shadow: 0 4px 12px rgba(101, 8, 23, 0.08);  
+      flex-shrink: 0;  
+    }  
+
+    .logo-texto {  
+      display: flex;  
+      flex-direction: column;  
+      line-height: 1;  
+    }  
+
+    .sobre-topo {  
+      display: flex;  
+      align-items: center;  
+      justify-content: center;  
+      gap: 18px;  
+      margin-bottom: 18px;  
+      flex-wrap: wrap;  
+    }  
+
+    .sobre-topo img {  
+      width: 64px;  
+      height: 64px;  
+      object-fit: contain;  
+      border-radius: 12px;  
+      background: white;  
+      padding: 6px;  
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);  
+    }  
+
+    .sobre-topo h2 {  
+      margin: 0;  
+      text-align: left;  
+    }  
+
+    .logo span {  
+      display: block;  
+      color: var(--preto);  
+      font-size: 10px;  
+      letter-spacing: 4px;  
+      font-weight: normal;  
+      margin-top: 4px;  
+    }  
+  
+    nav {  
+      display: flex;  
+      align-items: center;  
+      gap: 25px;  
+      flex-wrap: wrap;  
+    }  
+  
+    nav a {  
+      font-size: 14px;  
+      font-weight: bold;  
+      transition: color 0.28s ease, transform 0.28s ease, letter-spacing 0.28s ease;  
+    }  
+  
+    nav a:hover {  
+      color: var(--vermelho);  
+      transform: translateY(-2px);  
+      letter-spacing: 0.04em;  
+    }  
+  
+    .nav-botao {  
+      padding: 11px 18px;  
+      border-radius: 6px;  
+      background: linear-gradient(135deg, var(--bordo), #7e1022);  
+      color: white;  
+      transition: transform 0.28s ease, background 0.28s ease, box-shadow 0.3s ease, filter 0.3s ease;  
+      animation: pulseGlow 3.2s ease-in-out infinite;  
+    }  
+  
+    .nav-botao:hover {  
+      background: linear-gradient(135deg, var(--vermelho), #c91d2d);  
+      color: white;  
+      transform: translateY(-5px) scale(1.03);  
+      box-shadow: 0 16px 28px rgba(101, 8, 23, 0.24);  
+      filter: brightness(1.05);  
+    }  
+  
+    /* BANNER */  
+  
+    .banner {  
+      position: relative;  
+      overflow: hidden;  
+      padding: 95px 7%;  
+      text-align: center;  
+      background:  
+        radial-gradient(circle at 12% 20%, #F9B90025, transparent 23%),  
+        radial-gradient(circle at 90% 85%, #A8171B15, transparent 25%),  
+        linear-gradient(135deg, #FFFFFF, #F8EEEE);  
+    }  
+  
+    .banner::before,  
+    .banner::after {  
+      content: "✦";  
+      position: absolute;  
+      color: #F9B90055;  
+      font-size: 65px;  
+      pointer-events: none;  
+      animation: flutuar 4s ease-in-out infinite;  
+      filter: drop-shadow(0 0 10px rgba(249, 185, 0, 0.28));  
+    }  
+  
+    .banner::before {  
+      top: 40px;  
+      left: 9%;  
+      animation-delay: 0.4s;  
+    }  
+  
+    .banner::after {  
+      right: 10%;  
+      bottom: 35px;  
+      animation-delay: 1.5s;  
+    }  
+  
+    .banner-conteudo {  
+      max-width: 850px;  
+      margin: auto;  
+      position: relative;  
+      z-index: 1;  
+      animation: aparecer 1s ease both;  
+    }  
+  
+    .etiqueta {  
+      display: inline-block;  
+      background: var(--bordo);  
+      color: white;  
+      padding: 9px 18px;  
+      border-radius: 30px;  
+      font-size: 12px;  
+      font-weight: bold;  
+      letter-spacing: 2px;  
+      margin-bottom: 24px;  
+    }  
+  
+    .banner h1 {  
+      font-size: clamp(36px, 6vw, 65px);  
+      line-height: 1.08;  
+      color: var(--bordo);  
+      margin-bottom: 22px;  
+      font-weight: 900;  
+      text-transform: uppercase;  
+      animation: deslizar 0.8s ease both;  
+    }  
+  
+    .banner h1 span {  
+      color: var(--vermelho);  
+    }  
+  
+    .linha-dourada {  
+      height: 5px;  
+      width: 120px;  
+      background: linear-gradient(90deg, var(--dourado), #FFD65C, var(--dourado));  
+      border-radius: 10px;  
+      margin: 0 auto 24px;  
+      animation: linhaDourada 2.8s ease-in-out infinite, brilho 3s ease-in-out infinite;  
+      transform-origin: center;  
+    }  
+  
+    .banner p {  
+      max-width: 630px;  
+      margin: 0 auto 30px;  
+      font-size: 16px;  
+      color: var(--cinza);  
+      line-height: 1.8;  
+    }  
+  
+    .botao {  
+      display: inline-block;  
+      background: linear-gradient(135deg, var(--bordo), var(--vermelho));  
+      color: white;  
+      padding: 15px 26px;  
+      border: 2px solid var(--bordo);  
+      border-radius: 7px;  
+      font-weight: bold;  
+      transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.32s ease,  
+                  box-shadow 0.32s ease, border-color 0.32s ease, filter 0.32s ease;  
+      animation: pulseGlow 3.2s ease-in-out infinite;  
+      position: relative;  
+      overflow: hidden;  
+    }  
+
+    .botao::before {  
+      content: "";  
+      position: absolute;  
+      inset: 0;  
+      background: linear-gradient(120deg, transparent 25%, rgba(255,255,255,0.25), transparent 75%);  
+      transform: translateX(-140%);  
+      transition: transform 0.8s ease;  
+    }  
+  
+    .botao:hover {  
+      transform: translateY(-6px) scale(1.03);  
+      background: linear-gradient(135deg, var(--vermelho), #d62939);  
+      border-color: var(--vermelho);  
+      box-shadow: 0 14px 28px rgba(101, 8, 23, 0.22);  
+      filter: brightness(1.06);  
+    }  
+
+    .botao:hover::before {  
+      transform: translateX(140%);  
+    }  
+  
+    /* INFORMAÇÕES */  
+  
+    .informacoes {  
+      padding: 32px 7%;  
+      display: grid;  
+      grid-template-columns: repeat(3, minmax(0, 1fr));  
+      gap: 20px;  
+      background: white;  
+    }  
+  
+    .info {  
+      text-align: center;  
+      border: 1px solid #E8D5D8;  
+      border-radius: 12px;  
+      padding: 23px 15px;  
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease, border-color 0.35s ease;  
+      animation: aparecer 0.9s ease both;  
+    }  
+  
+    .info:nth-child(2) { animation-delay: 0.15s; }  
+    .info:nth-child(3) { animation-delay: 0.3s; }  
+  
+    .info:hover {  
+      transform: translateY(-10px) scale(1.02);  
+      border-color: var(--dourado);  
+      box-shadow: 0 16px 30px rgba(101, 8, 23, 0.12);  
+    }  
+  
+    .info-icone {  
+      font-size: 25px;  
+      margin-bottom: 9px;  
+      color: var(--bordo);  
+    }  
+  
+    .info h3 {  
+      color: var(--bordo);  
+      margin-bottom: 5px;  
+      font-size: 17px;  
+    }  
+  
+    .info p {  
+      color: var(--cinza);  
+      font-size: 13px;  
+    }  
+  
+    /* CARDÁPIO */  
+  
+    .catalogo {  
+      padding: 75px 7%;  
+    }  
+  
+    .titulo-secao {  
+      text-align: center;  
+      max-width: 700px;  
+      margin: 0 auto 45px;  
+      animation: aparecer 0.8s ease both;  
+    }  
+  
+    .subtitulo {  
+      color: var(--vermelho);  
+      font-size: 12px;  
+      font-weight: bold;  
+      letter-spacing: 3px;  
+      margin-bottom: 10px;  
+    }  
+  
+    .titulo-secao h2 {  
+      color: var(--bordo);  
+      font-size: clamp(30px, 4vw, 42px);  
+      margin-bottom: 14px;  
+    }  
+  
+    .titulo-secao p {  
+      color: var(--cinza);  
+      line-height: 1.8;  
+    }  
+  
+    /* GRADE DE QUATRO PRODUTOS */  
+  
+    .grade {  
+      display: grid;  
+      grid-template-columns: repeat(4, minmax(0, 1fr));  
+      gap: 22px;  
+      align-items: stretch;  
+    }  
+  
+    .produto {  
+      min-width: 0;  
+      background: white;  
+      border: 1px solid #E8D5D8;  
+      border-radius: 13px;  
+      overflow: hidden;  
+      box-shadow: 0 5px 18px #65081708;  
+      opacity: 0;  
+      position: relative;  
+      z-index: 1;  
+      animation: surgir 0.8s cubic-bezier(0.2, 0.9, 0.2, 1) forwards, subirCard 4s ease-in-out infinite;  
+      animation-delay: 0s, 0.9s;  
+      transition: transform 0.38s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.38s ease,  
+                  border-color 0.38s ease, filter 0.38s ease, opacity 0.38s ease, z-index 0.2s ease;  
+      will-change: transform;  
+      transform: perspective(1000px) rotateX(0deg) rotateY(0deg);  
+    }  
+  
+    .produto:nth-child(1) {  
+      animation-delay: 0.1s;  
+    }  
+  
+    .produto:nth-child(2) {  
+      animation-delay: 0.25s;  
+    }  
+  
+    .produto:nth-child(3) {  
+      animation-delay: 0.4s;  
+    }  
+  
+    .produto:nth-child(4) {  
+      animation-delay: 0.55s;  
+    }  
+  
+    .produto:hover {  
+      transform: translateY(-12px) scale(1.01);  
+      border-color: var(--dourado);  
+      box-shadow: 0 20px 42px rgba(101, 8, 23, 0.18);  
+      filter: saturate(1.05);  
+      z-index: 2;  
+      animation-play-state: paused;  
+    }  
+  
+    /* ESPAÇO DA FOTO */  
+  
+    .imagem {  
+      height: 220px;  
+      position: relative;  
+      overflow: hidden;  
+      display: flex;  
+      justify-content: center;  
+      align-items: center;  
+      background: linear-gradient(135deg, #F8EEEE, #FFF8E7);  
+      border-bottom: 4px solid var(--dourado);  
+    }  
+
+    .imagem::after {  
+      content: "";  
+      position: absolute;  
+      inset: 0;  
+      background: linear-gradient(135deg, rgba(249, 185, 0, 0.12), transparent 42%, rgba(101, 8, 23, 0.06));  
+      opacity: 0;  
+      transition: opacity 0.35s ease;  
+    }  
+  
+    .imagem img {  
+      position: absolute;  
+      inset: 0;  
+      width: 100%;  
+      height: 100%;  
+      object-fit: contain;  
+      object-position: center;  
+      padding: 12px;  
+      background: linear-gradient(135deg, #fff, #f7f1f2);  
+      transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.6s ease, box-shadow 0.6s ease;  
+      box-shadow: inset 0 0 0 rgba(0,0,0,0);  
+    }  
+
+    .imagem img + .placeholder {  
+      display: none;  
+    }  
+  
+    .produto:hover .imagem img {  
+      transform: scale(1.12) rotate(1.2deg);  
+      filter: saturate(1.2) brightness(1.03);  
+      box-shadow: inset 0 0 28px rgba(249, 185, 0, 0.12);  
+    }  
+
+    .produto:hover .imagem::after {  
+      opacity: 1;  
+    }  
+  
+    .placeholder {  
+      text-align: center;  
+      color: #8D4A53;  
+      padding: 15px;  
+    }  
+  
+    .placeholder .icone {  
+      display: block;  
+      font-size: 42px;  
+      color: var(--bordo);  
+      margin-bottom: 8px;  
+    }  
+  
+    .placeholder strong {  
+      display: block;  
+      font-size: 14px;  
+      margin-bottom: 5px;  
+    }  
+  
+    .placeholder p {  
+      font-size: 11px;  
+    }  
+  
+    /* ÁREA OPCIONAL PARA ESCOLHER UMA FOTO */  
+    .imagem input[type="file"] {  
+      position: absolute;  
+      inset: 0;  
+      width: 100%;  
+      height: 100%;  
+      opacity: 0;  
+      cursor: pointer;  
+      z-index: 2;  
+    }  
+  
+    .conteudo {  
+      padding: 20px;  
+    }  
+  
+    .categoria {  
+      display: inline-block;  
+      color: var(--bordo);  
+      background: var(--rosa-claro);  
+      border-radius: 4px;  
+      padding: 5px 9px;  
+      margin-bottom: 12px;  
+      font-size: 10px;  
+      font-weight: bold;  
+      text-transform: uppercase;  
+      letter-spacing: 1px;  
+    }  
+  
+    .produto h3 {  
+      color: var(--bordo);  
+      font-size: 19px;  
+      margin-bottom: 9px;  
+    }  
+  
+    .descricao {  
+      min-height: 44px;  
+      color: var(--cinza);  
+      font-size: 13px;  
+      line-height: 1.6;  
+      margin-bottom: 17px;  
+    }  
+  
+    .preco {  
+      color: var(--vermelho);  
+      font-size: 21px;  
+      font-weight: 900;  
+      padding-top: 13px;  
+      border-top: 1px solid #F0E5E7;  
+    }  
+  
+    .preco small {  
+      font-size: 11px;  
+      color: var(--cinza);  
+      font-weight: normal;  
+    }  
+  
+    /* SOBRE */  
+  
+    .sobre {  
+      padding: 65px 7%;  
+      text-align: center;  
+      background: var(--rosa-claro);  
+      border-top: 1px solid #E8D5D8;  
+      position: relative;  
+      overflow: hidden;  
+    }  
+
+    .sobre::before {  
+      content: "";  
+      position: absolute;  
+      inset: 0;  
+      background: radial-gradient(circle at center, rgba(249,185,0,0.12), transparent 60%);  
+      pointer-events: none;  
+      animation: brilhoPremium 4s ease-in-out infinite;  
+    }  
+  
+    .sobre h2 {  
+      color: var(--bordo);  
+      font-size: 31px;  
+      margin-bottom: 17px;  
+      position: relative;  
+      z-index: 1;  
+    }  
+  
+    .detalhe {  
+      height: 4px;  
+      width: 65px;  
+      background: linear-gradient(90deg, var(--dourado), #f7ca3d, var(--dourado));  
+      margin: 0 auto 20px;  
+      border-radius: 999px;  
+      animation: brilho 3s ease-in-out infinite;  
+    }  
+  
+    .sobre p {  
+      max-width: 720px;  
+      margin: auto;  
+      color: #625257;  
+      font-size: 15px;  
+      line-height: 1.9;  
+    }  
+  
+    /* RODAPÉ */  
+  
+    footer {  
+      text-align: center;  
+      padding: 35px 7%;  
+      background: #39060D;  
+      color: white;  
+      border-top: 5px solid var(--dourado);  
+    }  
+  
+    footer .nome {  
+      font-size: 22px;  
+      font-weight: 900;  
+      letter-spacing: 1px;  
+    }  
+  
+    footer .escola {  
+      font-size: 10px;  
+      letter-spacing: 4px;  
+      margin-bottom: 18px;  
+    }  
+  
+    footer p {  
+      color: #EBD5D8;  
+      font-size: 13px;  
+      margin-top: 5px;  
+    }  
+  
+    /* CELULAR E TABLET */  
+  
+    @media (max-width: 1100px) {  
+      .grade {  
+        grid-template-columns: repeat(2, minmax(0, 1fr));  
+      }  
+    }  
+  
+    @media (max-width: 650px) {  
+      header {  
+        position: relative;  
+        flex-direction: column;  
+        text-align: center;  
+      }  
+  
+      nav {  
+        justify-content: center;  
+        gap: 14px;  
+      }  
+  
+      nav a {  
+        font-size: 12px;  
+      }  
+  
+      .banner {  
+        padding: 70px 6%;  
+      }  
+  
+      .banner::before {  
+        left: 3%;  
+      }  
+  
+      .banner::after {  
+        right: 3%;  
+      }  
+  
+      .informacoes {  
+        grid-template-columns: 1fr;  
+        padding: 25px 6%;  
+      }  
+  
+      .catalogo {  
+        padding: 55px 6%;  
+      }  
+  
+      .grade {  
+        grid-template-columns: 1fr;  
+        max-width: 420px;  
+        margin: auto;  
+      }  
+  
+      .imagem {  
+        height: 250px;  
+      }  
+  
+      .sobre {  
+        padding: 50px 6%;  
+      }  
+    }  
+  
+    /* RESPEITA QUEM PREFERE MENOS ANIMAÇÕES */  
+  
+    @media (prefers-reduced-motion: reduce) {  
+      *,  
+      *::before,  
+      *::after {  
+        animation-duration: 0.01ms !important;  
+        animation-iteration-count: 1 !important;  
+        scroll-behavior: auto !important;  
+        transition-duration: 0.01ms !important;  
+      }  
+  
+      .produto {  
+        opacity: 1;  
+      }  
+    }  
+  </style> </head> <body> <!-- CABEÇALHO --> <header>  
+    <a href="#inicio" class="logo" aria-label="Evolução Unidade de Ensino">  
+      <img class="logo-imagem" src="https://th.bing.com/th/id/R.c7bad2d850c9fcb0283f8df58e104ce6?rik=EtAfug%2bkbazGgg&riu=http%3a%2f%2fwww.eduevolucao.com.br%2fimg%2flogo.png&ehk=U5jeK74h178d7nT8o6idSOthgBHof0SGFrYWR6bk40s%3d&risl=&pid=ImgRaw&r=0" alt="Logo Evolução Unidade de Ensino">  
+      <span class="logo-texto">  
+        EVOLUÇÃO  
+        <span>UNIDADE DE ENSINO</span>  
+      </span>  
+    </a>  
+    <nav>  
+      <a href="#inicio">Início</a>  
+      <a href="#produtos">Cardápio</a>  
+      <a href="#sobre">Sobre</a>  
+      <a href="#produtos" class="nav-botao">Ver produtos ↓</a>  
+    </nav>  
+
+  </header> <!-- BANNER --> <section class="banner" id="inicio">  
+    <div class="banner-conteudo"> <span class="etiqueta">FEIRA ESCOLAR</span>  
+
+  <h1>  
+    Feira do colegio e curso<br>  
+    <span>Evolução!</span>  
+  </h1>  
+
+  <div class="linha-dourada"></div>  
+
+  <p>  
+  Feira de empreendedorismo do colegio e curso evolução   
+  </p>  
+
+  <a href="#produtos" class="botao">  
+    Conhecer o cardápio →  
+  </a>  
+
+</div>
+
+  </section> <!-- CARDÁPIO: SOMENTE QUATRO PRODUTOS --> <section class="catalogo" id="produtos"> <div class="titulo-secao">  
+  <div class="subtitulo">Nosso cardápio</div>  
+
+  <h2>Produtos da feira</h2>  
+
+  <p>  
+    Confira as opções da nossa feira escolar.  
+     
+  </p>  
+</div>  
+
+<div class="grade">  
+
+  <!-- PRODUTO 1: LASANHA -->  
+  <article class="produto">  
+    <div class="imagem">  
+      <img src="https://tse3.mm.bing.net/th/id/OIP.GMSoRaMvZMixN4fVdND2hQHaEO?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Lasanha">  
+
+      <div class="placeholder">  
+        <span class="icone">＋</span>  
+        <strong>Foto da lasanha</strong>  
+        <p>Adicione a imagem no código</p>  
+      </div>  
+
+    </div>  
+
+    <div class="conteudo">  
+      <span class="categoria">Comida</span>  
+      <h3>Lasanha</h3>  
+
+      <p class="descricao">  
+        acompanhada por arroz e batata palha  
+      </p>  
+
+      <div class="preco">  
+        R$ --,-- <small> / porção</small>  
+      </div>  
+    </div>  
+  </article>  
+
+  <!-- PRODUTO 2: REFRIGERANTE -->  
+  <article class="produto">  
+    <div class="imagem">  
+      <img src="https://destro.fbitsstatic.net/img/p/refrigerante-guarana-antartica-pet-200ml-81435/267990.jpg?w=1000&h=1000&v=202501231555&qs=ignore" alt="Refrigerante de 250 ml">  
+
+      <div class="placeholder">  
+        <span class="icone">＋</span>  
+        <strong>Foto do refrigerante</strong>  
+        <p>Adicione a imagem no código</p>  
+      </div>  
+
+    </div>  
+
+    <div class="conteudo">  
+      <span class="categoria">Bebida</span>  
+      <h3>Refrigerante</h3>  
+
+      <p class="descricao">  
+        Refrigerante em embalagem de 250 ml.  
+      </p>  
+
+      <div class="preco">  
+        R$ --,-- <small> / unidade</small>  
+      </div>  
+    </div>  
+  </article>  
+
+  <!-- PRODUTO 3: ÁGUA -->  
+  <article class="produto">  
+    <div class="imagem">  
+      <img src="https://images.tcdn.com.br/img/img_prod/858764/agua_crystal_500ml_c_12_125_1_a26927dc99c2653019b71f1ee44e98be.jpg" alt="Água mineral de 500 ml">  
+
+      <div class="placeholder">  
+        <span class="icone">＋</span>  
+        <strong>Foto da água</strong>  
+        <p>Adicione a imagem no código</p>  
+      </div>  
+
+    </div>  
+
+    <div class="conteudo">  
+      <span class="categoria">Bebida</span>  
+      <h3>Água mineral</h3>  
+
+      <p class="descricao">  
+        Água em garrafa de 500 ml.  
+      </p>  
+
+      <div class="preco">  
+        R$ --,-- <small> / unidade</small>  
+      </div>  
+    </div>  
+  </article>  
+
+  <!-- PRODUTO 4: CRESPELLE -->  
+  <article class="produto">  
+    <div class="imagem">  
+      <img src="https://guiadacozinha.com.br/wp-content/uploads/2020/12/receita-panqueca-de-frango.jpg" alt="Crespelle">  
+
+      <div class="placeholder">  
+        <span class="icone">＋</span>  
+        <strong>Foto do crespelle</strong>  
+        <p>Adicione a imagem no código</p>  
+      </div>  
+
+    </div>  
+
+    <div class="conteudo">  
+      <span class="categoria">Comida</span>  
+      <h3>Crespelle</h3>  
+
+      <p class="descricao">  
+        Acompanhada de arroz e batata palha.  
+      </p>  
+
+      <div class="preco">  
+        R$ --,-- <small> / porção</small>  
+      </div>  
+    </div>  
+  </article>  
+
+</div>
+
+  </section> <!-- SOBRE --> <section class="sobre" id="sobre">  
+    <div class="sobre-topo">  
+      <img src="https://th.bing.com/th/id/R.c7bad2d850c9fcb0283f8df58e104ce6?rik=EtAfug%2bkbazGgg&riu=http%3a%2f%2fwww.eduevolucao.com.br%2fimg%2flogo.png&ehk=U5jeK74h178d7nT8o6idSOthgBHof0SGFrYWR6bk40s%3d&risl=&pid=ImgRaw&r=0" alt="Logo Evolução Unidade de Ensino">  
+      <h2>Evolução Unidade de Ensino</h2>  
+    </div>  
+    <div class="detalhe"></div>  
+
+<p>  
+    
+</p>
+
+  </section> <!-- RODAPÉ --> <footer>  
+    <div class="nome">EVOLUÇÃO</div>  
+    <div class="escola">UNIDADE DE ENSINO</div> <p>Feira Escolar</p>  
+<p>Feito por Gabriel Milton</p>  
+<p>© <span id="ano"></span> Evolução Unidade de Ensino.</p>
+
+  </footer> <script>  
+    document.getElementById("ano").textContent =  
+      new Date().getFullYear();  
+  </script> </body>  
+</html>  
